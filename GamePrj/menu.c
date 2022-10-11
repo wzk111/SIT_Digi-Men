@@ -2,6 +2,7 @@
 #include "cprocessing.h"
 #include "char_select.c"
 
+CP_Image Logo1;
 
 
 void menu_init(void) {
@@ -13,6 +14,8 @@ void menu_init(void) {
 	CP_Graphics_ClearBackground(CP_Color_Create(227, 193, 111, 255));  // warm beach colour (remind self to grid the back ground)
 	textSize = 120.0f;
 	CP_Settings_TextSize(textSize);
+
+	Logo1 = CP_Image_Load("Assets/")// add images to BG load assets from the file
 
 }
 
