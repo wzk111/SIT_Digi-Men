@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include "cprocessing.h"
-#include "char_select.c"
+#include "menu_utils.h"
 
+#include "../Inc/game.h"
 CP_Image Logo1;
 
 
@@ -15,7 +16,7 @@ void menu_init(void) {
 	textSize = 120.0f;
 	CP_Settings_TextSize(textSize);
 
-	Logo1 = CP_Image_Load("Assets/")// add images to BG load assets from the file
+	Logo1 = CP_Image_Load("Assets/");// add images to BG load assets from the file
 
 }
 
@@ -60,32 +61,26 @@ void menu_update(void) {
 	CP_Font_DrawText("SETTINGS", setting_button_x, setting_button_y);
 
 		// function for 4 buttons on main menu
-	if (IsAreaClicked(play_button_x, play_button_y, button_width, button_height, 0.0, 20.0, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
-		
-
-		CP_Engine_SetNextGameState(char_select_init, char_select_update, char_select_exit);
+	if (IsAreaClicked(play_button_x, play_button_y, button_width, button_height, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
+		CP_Engine_SetNextGameState(game_init, game_update, game_exit);
 		CP_Engine_Run();
 	}
 	
-	else if (IsAreaClicked(exit_button_x, exit_button_y, button_width, button_height, 0.0, 20.0, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
+	else if (IsAreaClicked(exit_button_x, exit_button_y, button_width, button_height, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
 		CP_Engine_Terminate();
 	}
 	
-	else if (IsAreaClicked(tutorial_button_x, tutorial_button_y, button_width, button_height, 0.0, 20.0, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
+	else if (IsAreaClicked(tutorial_button_x, tutorial_button_y, button_width, button_height, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
 
-	    CP_Engine_SetNextGameState()// set function and description for tutorial
-		CP_Engine_Run();
+		//CP_Engine_SetNextGameState();// set function and description for tutorial
+		//CP_Engine_Run();
 	}
 	
-	else if (IsAreaClicked(setting_button_x, setting_button_y, button_width, button_height, 0.0, 20.0, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
+	else if (IsAreaClicked(setting_button_x, setting_button_y, button_width, button_height, CP_Input_GetMouseX(), CP_Input_GetMouseY())) {
 
-		CP_Engine_SetNextGameState()// set function for setting (sound adjustment)
-		CP_Engine_Run();
+		//CP_Engine_SetNextGameState();// set function for setting (sound adjustment)
+		//CP_Engine_Run();
 
-	}
-
-	else {
-		return 0;
 	}
 
 }
@@ -95,17 +90,4 @@ void menu_exit(void) {
 
 }
 
-//function for button click
-int IsAreaClicked(float area_center_x, float area_center_y, float area_width, float area_height, float click_x, float click_y)//
-{
 
-	if (CP_Input_MouseTriggered(MOUSE_BUTTON_LEFT)) {
-		if ((area_center_x - area_width / 2) < click_x && click_x < (area_center_x + area_width / 2) && (area_center_y - area_height / 2) < click_y && click_y < (area_center_y + area_height / 2)) {
-
-			return 1;
-		}
-		else {
-			return 0;
-		}
-	}
-}

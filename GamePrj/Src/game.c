@@ -14,7 +14,7 @@ struct entity { //we use entity as the default list of stats for all players and
     int MOVE_SPEED;
 };
 
-struct entity Player;
+struct entity player;
 
 /*to define future enemies u can use :
 struct entity enemy1;
@@ -72,22 +72,22 @@ CP_Image KING;
 void game_init(void) {
 
     //loading in images
-    PAWN = CP_Image_Load("Assets/pawn.png");
-    KNIGHT = CP_Image_Load("Assets/knight.png");
-    BISHOP = CP_Image_Load("Assets/bishop.png");
-    ROOK = CP_Image_Load("Assets/rook.png");
-    QUEEN = CP_Image_Load("Assets/queen.png");
-    KING = CP_Image_Load("Assets/king.png");
+    PAWN = CP_Image_Load("/Assets/pawn.png");
+    KNIGHT = CP_Image_Load("../Assets/knight.png");
+    BISHOP = CP_Image_Load("../Assets/bishop.png");
+    ROOK = CP_Image_Load("../Assets/rook.png");
+    QUEEN = CP_Image_Load("../Assets/queen.png");
+    KING = CP_Image_Load("../Assets/king.png");
 
 
     //putting the player in the center of the room
-    Player.vector.x = (float)ROOM_WIDTH / 2;
-    Player.vector.y = (float)ROOM_HEIGHT / 2;
+    player.vector.x = (float)ROOM_WIDTH / 2;
+    player.vector.y = (float)ROOM_HEIGHT / 2;
     
-    //setting Player Stats
-    Player.DMG = 2;
-    Player.HP = 3;
-    Player.MOVE_SPEED = 10;
+    //setting player Stats
+    player.DMG = 2;
+    player.HP = 3;
+    player.MOVE_SPEED = 10;
 
     //setting camera view width and heights
     camera1.view_height = GRID_SIZE * GRID_ROW / 3;
@@ -106,8 +106,8 @@ void game_update(void) {
 
 
     //putting the camera at set distance from player and not exiting screen
-    camera1.x = Player.vector.x - camera1.camera_width/2;
-    camera1.y = Player.vector.y - camera1.camera_height/2;
+    camera1.x = player.vector.x - camera1.camera_width/2;
+    camera1.y = player.vector.y - camera1.camera_height/2;
 
 
     //limiting the camera so it doesn't go out of bounds
@@ -117,42 +117,41 @@ void game_update(void) {
     if ((camera1.y+camera1.camera_height) > ROOM_HEIGHT) { camera1.y = ROOM_HEIGHT-camera1.camera_height; }
 
     //limiting the player so it doesn't go out of bounds
-    if (Player.vector.x < 0) { Player.vector.x = 0; }
-    if (Player.vector.x > ROOM_WIDTH) { Player.vector.x = ROOM_WIDTH; }
-    if (Player.vector.y < 0) { Player.vector.y = 0; }
-    if (Player.vector.y > ROOM_HEIGHT) { Player.vector.y = ROOM_HEIGHT; }
+    if (player.vector.x < 0) { player.vector.x = 0; }
+    if (player.vector.x > ROOM_WIDTH) { player.vector.x = ROOM_WIDTH; }
+    if (player.vector.y < 0) { player.vector.y = 0; }
+    if (player.vector.y > ROOM_HEIGHT) { player.vector.y = ROOM_HEIGHT; }
 
 
     //drawing lines;
     CP_Graphics_ClearBackground(CP_Color_Create(0, 0, 0, 255));
 
     CP_Settings_Stroke(CP_Color_Create(255, 255, 255, 255));
+    //From 131-136 got possible warning data loss can someone look into it?
     for (int row = 0; row <= GRID_ROW; row++) {
-        CP_Graphics_DrawLine(row * GRID_SIZE -camera1.x, 0 -camera1.y, row * GRID_SIZE -camera1.x, GRID_COL * GRID_SIZE - camera1.y);
+        CP_Graphics_DrawLine(row * GRID_SIZE -camera1.x, 0 -camera1.y, row * GRID_SIZE - camera1.x, GRID_COL * GRID_SIZE - camera1.y);
     }
     for (int col = 0; col <= GRID_COL; col++) {
         CP_Graphics_DrawLine(0 - camera1.x, col * GRID_SIZE - camera1.y, GRID_ROW * GRID_SIZE - camera1.x, col * GRID_SIZE - camera1.y);
     }
 
 
-    //Player WASD example
-    if (CP_Input_KeyDown(KEY_A)) {
-        Player.vector.x -=Player.MOVE_SPEED;
+    //player WASD example
+    if (CP_Input_KeyDown(KEY_A || KEY_LEFT)) {
+        player.vector.x -=player.MOVE_SPEED;
     }
-    if (CP_Input_KeyDown(KEY_D)) {
-        Player.vector.x += Player.MOVE_SPEED;
+    if (CP_Input_KeyDown(KEY_D || KEY_RIGHT)) {
+        player.vector.x += player.MOVE_SPEED;
     }
-    if (CP_Input_KeyDown(KEY_W)) {
-        Player.vector.y -= Player.MOVE_SPEED;
+    if (CP_Input_KeyDown(KEY_W || KEY_UP)) {
+        player.vector.y -= player.MOVE_SPEED;
     }
-    if (CP_Input_KeyDown(KEY_S)) {
-        Player.vector.y += Player.MOVE_SPEED;
+    if (CP_Input_KeyDown(KEY_S || KEY_DOWN)) {
+        player.vector.y += player.MOVE_SPEED;
     }
 
-    //Drawing Player Example
-    CP_Image_Draw(PAWN, Player.vector.x- camera1.x, Player.vector.y - camera1.y, GRID_SIZE, GRID_SIZE, 255);
-
-
+    //Drawing player Example
+    CP_Image_Draw(PAWN, player.vector.x- camera1.x, player.vector.y - camera1.y, GRID_SIZE, GRID_SIZE, 255);
 
 
 
